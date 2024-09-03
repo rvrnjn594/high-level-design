@@ -134,7 +134,7 @@ The following figure shows that several tables with the same partition key are p
 
 ###### Advantages
 
-- Using key-range-based sharding method, the **range-query-based scheme is easy to implement**. We precisely know where (which node, which shard) to look for a specific range of keys.
+- Using key-range-based sharding method, the **range-query-based schema is easy to implement**. We precisely know where (which node, which shard) to look for a specific range of keys.
 - Range queries **can be performed using the partitioning keys**, and those can be kept in partitions in sorted order. How exactly such a sorting happens over time as new data comes in is implementation specific.
 
 ###### Disadvantages
@@ -216,26 +216,95 @@ We can apply the following strategies to rebalance partitions.
 
 ##### Avoid hash mod n
 
+Usually, we avoid the hash of a key for partitioning (we used such a scheme to explain the concept of hashing in simple terms earlier). The problem with the addition or removal of nodes in the case of
+hashmod n is that every node’s partition number changes and a lot of data moves. For example, assume we have hash(key) = 1235. If we have five nodes at the start, the key will start on node 1 (1235 mod 5 = 0). Now, if a new node is added, the key would have to be moved to node 6 (1235 mod 6 = 5), and so on. This moving of keys from one node to another makes rebalancing costly.
+
 ##### Fixed number of partitions
+
+In this approach, the number of partitions to be created is fixed at the time when we set our database up. We create a higher number of partitions than the nodes and assign these partitions to nodes. So, when a new node is added to the system, it can take a few partitions from the existing nodes until the partitions are equally divided.
+
+There’s a downside to this approach. The size of each partition grows with the total amount of data in the cluster since all the partitions contain a small part of the total data. If a partition is very small, it will result in too much overhead because we may have to make a large number of small-sized partitions, each costing us some overhead. If the partition is very large, rebalancing the nodes and recovering from node failures will be expensive. It’s very important to choose the right number of partitions. A fixed number of partitions is used in Elasticsearch, Riak, and many more.
 
 ##### Dynamic partitioning
 
+In this approach, when the size of a partition reaches the threshold, it’s split equally into two partitions. One of the two split partitions is assigned to one node and the other one to another node. In this way, the load is divided equally. The number of partitions adapts to the overall data amount, which is an advantage of dynamic partitioning.
+
+However, there’s a downside to this approach. It’s difficult to apply dynamic rebalancing while serving the reads and writes. Dynamic rebalancing during reads and writes is challenging because it involves moving data between nodes, causing latency and potential conflicts. Ensuring data consistency (as data is simultaneously moved and accessed) and availability (potentially requiring pauses in reads/writes during rebalancing) introduces complexities that can impact system performance and reliability. This approach is used in HBase and MongoDB.
+
 ##### Partition proportionally to nodes
+
+In this approach, the number of partitions is proportionate to the number of nodes, which means every node has fixed partitions. In earlier approaches, the number of partitions was dependent on the size of the dataset. That isn’t the case here. While the number of nodes remains constant, the size of each partition rises according to the dataset size. However, as the number of nodes increases, the partitions shrink. When a new node enters the network, it splits a certain number of current partitions at random, then takes one half of the split and leaves the other half alone. This can result in an unfair split. This approach is used by Cassandra and Ketama.
+
+---
+
+**Point to Ponder**
+Who performs the rebalancing? Is it automatic or manual?
+
+There are two ways to perform rebalancing: automatic and manual. In automatic rebalancing, there’s no administrator. The system determines when to perform the partitions and when to move data from one node to another.
+
+In manual rebalancing, the administrator determines when and how to perform the partitioning. Organizations perform rebalancing according to their needs. Some use automatic rebalancing, and some use manual.
+
+---
 
 ### Partitioning and secondary indexes
 
+We’ve discussed key-value data model partitioning schemes in which the records are retrieved with primary keys. But what if we have to access the records through secondary indexes? Secondary indexes are the records that aren’t identified by primary keys but are just a way of searching for some value. For example, the above illustration of horizontal partitioning contains the customer table, searching for all customers with the same creation year.
+
+We can partition with secondary indexes in the following ways.
+
 ##### Partition secondary indexes by document
+
+Each partition is fully independent in this indexing approach. Each partition has its secondary indexes covering just the documents in that partition. It’s unconcerned with the data held in other partitions. If we want to write anything to our database, we need to handle that partition only containing the document ID we’re writing. It’s also known as the local index. In the illustration below, there are three partitions, each having its own identity and data. If we want to get all the customer IDs with the name John, we have to request from all partitions.
+
+However, this type of querying on secondary indexes can be expensive. As a result of being restricted by the latency of a poor-performing partition, read query latencies may increase.
+
+![partitioning secondary indexes by document](./images/4-7-partioning-secondary-indexes-by%20document.png)
 
 ##### Partition secondary indexes by the term
 
+Instead of creating a secondary index for each partition (a local index), we can make a global index for secondary terms that encompasses data from all partitions.
+
+In the illustration below, we create indexes on names (the term on which we’re partitioning) and store all the indexes for names on separated nodes. To get the cust_id of all the customers named John, we must determine where our term index is located. The index 0 contains all the customers with names starting with “A” to “M.” The index 1 includes all the customers with names beginning with “N” to “Z.” Because John lies in index 0, we fetch a list of cust_id with the name John from index 0.
+
+Partitioning secondary indexes by the term is more read-efficient than partitioning secondary indexes by the document. This is because it only accesses the partition that contains the term. However, a single write in this approach affects multiple partitions, making the method write-intensive and complex.
+
+![partitioning secondary indexes by term](./images/4-8-partitioning-secondary-indexes-by-term.png)
+
 ## Request routing
 
-We'v
+We’ve learned how to partition our data. However, one question arises here: How does a client know which node to connect to while making a request? The allocation of partitions to nodes varies after rebalancing. If we want to read a specific key, how do we know which IP address we need to connect to read?
+
+This problem is also known as service discovery. Following are a few approaches to this problem:
+
+- Allow the clients to request any node in the network. If that node doesn’t contain the requested data, it forwards that request to the node that does contain the related data.
+- The second approach contains a routing tier. All the requests are first forwarded to the routing tier, and it determines which node to connect to fulfill the request.
+- The clients already have the information related to partitioning and which partition is connected to which node. So, they can directly contact the node that contains the data they need.
+
+In all of these approaches, the main challenge is to determine how these components know about updates in the partitioning of the nodes.
 
 ### Zookeeper
+
+To track changes in the cluster, many distributed data systems need a separate management server like ZooKeeper. Zookeeper keeps track of all the mappings in the network, and each node connects to ZooKeeper for the information. Whenever there’s a change in the partitioning, or a node is added or removed, ZooKeeper gets updated and notifies the routing tier about the change. HBase, Kafka and SolrCloud use ZooKeeper.
 
 ## Conclusion
 
 For all current distributed systems, partitioning has become the standard protocol.  
 Because systems contain increasing amounts of data, partitioning the data makes sense since it speeds up both writes and reads.  
  It increases the system's availability, scalability, and performance.
+
+---
+
+Let’s assess our understanding of what’s described in this lesson with the following question:
+
+Imagine you’re a database architect for a rapidly expanding e-commerce platform with a global user base. The platform experiences varying user activity levels across different regions, as illustrated below. The existing monolithic database struggles to handle the increasing load. Users in different regions have distinct sets of preferences and tend to interact more within their regions. Now, we’re looking for an efficient and scalable solution to optimize performance, enhance scalability, and cater to regional variations in user behavior. Regarding this, which one of the following strategies would you adopt, and why?
+
+- Database sharding
+- Database replication
+
+Note: Provide your answer in the following interactive widget:
+
+![monolothic-database](./images/4-9-assesment.png)
+
+In this scenario, the most suitable strategy would be to implement database sharding. This is because sharding involves dividing the database into smaller, manageable parts, known as shards, each responsible for a specific subset of data. This approach is particularly effective in handling the scalability challenges and optimizing performance for a rapidly expanding e-commerce platform. It also aligns well with the regional variations in user behavior and levels of activity, as each shard can be tailored to cater to the specific needs of its respective region.
+
+---

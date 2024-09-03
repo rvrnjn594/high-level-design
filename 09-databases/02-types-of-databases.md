@@ -151,7 +151,7 @@ These databases allow easy partitioning and horizontal scaling of the data.
 
 > **Use case:**  
 >  Key-value databases are efficient for session-oriented applications. Session-oriented applications, such as web-application, store user's data in the main memory or in a database during a session.  
->  This data may include user profile information, recommendations, targeted promotions, discounts, and more
+>  This data may include user profile information, recommendations, targeted promotions, discounts, and more.
 >
 > A unique ID (a key) is assigned to each user's session for easy access and storage.  
 >  Therefore, a better choice to such data is the key-value database.
