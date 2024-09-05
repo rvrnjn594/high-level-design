@@ -159,7 +159,7 @@ Similar to BOTECs, we can say that **if a CPU-bound request takes X time units t
 ## Abstracting away the complexities of real system
 
 Above, we've seen the complexities involved in real systems.  
- All such complexities at the design level, especially in a limited tim frame such as an interview, is impractical.
+ All such complexities at the design level, especially in a limited time frame such as an interview, is impractical.
 
 **BOTECs are a valuable tool for making quick, high-level estimates and decisions in the early stages of system design or when a rapid assessment is needed.**  
  So, moving forward, we'll learn to perform back-of-the-envelope calculations.
