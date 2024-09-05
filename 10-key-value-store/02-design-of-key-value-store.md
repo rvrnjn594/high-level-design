@@ -94,6 +94,8 @@ We return the associated value on the basis of the parameter key. When data is r
  It's done by the system if the store is configured with a weaker data consistency model.  
  For example, in eventual consistency, there might be more than one value returned against a key.
 
+      key - it's the key against which we want to get value
+
 **The put function**
 The API call to put the value into the system should look like this:
 
@@ -101,6 +103,9 @@ The API call to put the value into the system should look like this:
 
 It stores the value associated with the key. The system automatically determines where data should be placed.  
  Additionaly, the system often keeps metadata about the stored object. Such metadata can include the version of the object.
+
+      key - It's the key against which we have to store value
+      value - It's the object to be stored against the key
 
 ---
 
