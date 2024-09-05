@@ -27,7 +27,7 @@ Reliability and availability are two important metrics to measure compliance of 
 
 > The measurement of availability is driven by time loss, whereas the frequency and impact of failures drive the measure of reliability.
 >
-> Availability and reliability are essential because they enablr the stakeholders to assess the health of the service.
+> Availability and reliability are essential because they enable the stakeholders to assess the health of the service.
 
 > Reliability(R) and availability(A) are two distinct concepts, but they are related.
 >
@@ -60,7 +60,7 @@ What is the difference between reliability and availabilty?
 >
 > Example 1: A certain system may be 90% available but only reliable 80% of the time.
 >
-> Example 2: Suppose we consider our "system" the stuff inside a data center (hardware + software). Let's assume thid data center suffers a network failure such that no outside traffic is coming in and no insider traffic is going out.  
+> Example 2: Suppose we consider our "system" the stuff inside a data center (hardware + software). Let's assume this data center suffers a network failure such that no outside traffic is coming in and no insider traffic is going out.  
 >  In this case, instantenous availability might be zero (bacause clients cannot reach the service) even though inside the data center, all systems are perfectly functioning (instantaneous reliability 100%).
 
 We use both of them (reliability and availability) in different contexts.  

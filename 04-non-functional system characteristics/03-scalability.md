@@ -44,6 +44,6 @@ The dollar cost of vertical scaling is usually high because we might need exotic
 Horizontal scaling, also known as "scaling out", refers to increasing the number of machines in the network.  
  We use commodity nodes for this purpose because of their attractive dollar-cose benefits.
 
-The catch here is that we need to build a system such that **many nodes could collectively work as if we had a single, hige server.**
+The catch here is that we need to build a system such that **many nodes could collectively work as if we had a single, high server.**
 
 ![vertical scaling versus horizontal scaling](./images/3-verical-versus-horizontal-scaling.png)

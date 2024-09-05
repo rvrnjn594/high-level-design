@@ -45,7 +45,7 @@ One of the most widely-used techniques is **replication-based fault tolerance.**
 > We can also asynchronously update data in replicas when we can tolerate eventual consistency, resulting in stale reads until all replicas converge.
 > Thus, there is a trade-off between both consistency approached.
 >
-> We compromise either on availability or on consistency under filures - a reality that outlined in the CAP theorem.
+> We compromise either on availability or on consistency under failures - a reality that outlined in the CAP theorem.
 >
 > ![replication-based fault tolerance](./images/5-replication-based-fault-tolerance.png)
 
