@@ -74,7 +74,7 @@ An example could be the type of database - will a conventional database work, or
 > > As designers, we'd have a harder job because we'd need to use a traditional database and do extra work to ameliorate the shortcomings or challenges.  
 > > In this case, we'd have invented a new component.
 >
-> Such interactions during interviews are also excellent oppurtunities to ecxhibit our design skills.
+> Such interactions during interviews are also excellent oppurtunities to exhibit our design skills.
 
 **Note:** We often abstract away the details of the components as boxes and use arrows to show the interactions between them.
 
