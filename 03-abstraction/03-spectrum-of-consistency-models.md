@@ -74,7 +74,7 @@ Causal consistency works by categorizing operations into dependent and independe
 Causal consistency is weaker overall, but stronger than the eventual consistency model. It's used to prevent non-intuitive behaviors.
 
 > Example:  
-> Thr causal consistency model is used in a commenting system. For example, for the replies to a comment on a Facebook post, we want to display comments after the comment it replies to. This is because there is a cause-and-effect relationship between a comment and its replies.
+> The causal consistency model is used in a commenting system. For example, for the replies to a comment on a Facebook post, we want to display comments after the comment it replies to. This is because there is a cause-and-effect relationship between a comment and its replies.
 
 **NOTE:** There are many consistency models other than the four discussed in this lesson, and there is still room for new consistency models. Researchers have developed new consistency models. For examples, recent proposed that the causal + consistency model to speed up some specific types of transactions.
 
@@ -84,7 +84,7 @@ Sequential consistency is stronger than the causal consistency model. It preserv
  However, sequential consistency doesn't ensure that the writes are visible instantaneously or in the same order as they occurred according to some global clock.
 
 > Example:  
-> In social networking applications, we usually don't care about the order in which some o four friends' posts appear. However, we still anticipate a single friend's posts to appear in the correct order in which they were created.
+> In social networking applications, we usually don't care about the order in which some of four friends' posts appear. However, we still anticipate a single friend's posts to appear in the correct order in which they were created.
 >
 > Similarly, we expect our friends' comment in a post to display in the order that they were submitted. The sequential consistency model captures all of these qualities.
 
@@ -104,7 +104,7 @@ Linearizability affects the system's availability, which is why it's not always 
 > Example:  
 > Updating an account's password requires strict consistency,  
 >  For example, if we suspect suspicious activity on our bank account, we immediately change our password so that no unauthorized users can access our account.  
->  If it were possible to access our account using an old password due to a lack of strict consistency, then changing passwords would ne a useless security strategy.
+>  If it were possible to access our account using an old password due to a lack of strict consistency, then changing passwords would be a useless security strategy.
 
 **NOTE:** Google's Spanner database claims to be linearizable for many of its operation.
 
@@ -118,5 +118,6 @@ Linearizable services have worse performance rates than services with weaker con
 
 > Think about a read in a key-value store that returns the value written by a concurrent write. The read imposes no limits on future reads of the key-value store is weakly consistent.
 
-Application programmers have to compromise performance and availability if they use services with strong consistency models.  
- > The models may break the invariants of applications built on top of them in exchange for increased performance.
+Application programmers have to compromise performance and availability if they use services with strong consistency models.
+
+> The models may break the invariants of applications built on top of them in exchange for increased performance.

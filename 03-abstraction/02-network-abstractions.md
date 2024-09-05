@@ -70,5 +70,5 @@ RPCs are used in many real-world services. Take a look at the examples given bel
 
 The RPC method is similar to calling a local procedure, except that **the called procedure is usually executed in a different process and on a different computer.**
 
-RPC allows developers to build applications on top of distrinuted systems. Developers can use the RPC method without knowing the network communication details.  
+RPC allows developers to build applications on top of distributed systems. Developers can use the RPC method without knowing the network communication details.  
  As a result, they can concentrate on the design aspects rather than the machine and communication-level specifics.
