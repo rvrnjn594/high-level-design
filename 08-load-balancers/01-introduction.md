@@ -12,7 +12,7 @@ Learn about the basics of load balancers and the services offered by them.
 
 > Millions of requests could arrive per second in a typical data center. To serve these requests, thousands (or a hundred thousands) servers work together to share the load of incoming requests.
 >
-> **NOTE:** Here, it's important that we consider how the incoming requests will be divided among all teh available servers.
+> **NOTE:** Here, it's important that we consider how the incoming requests will be divided among all the available servers.
 >
 > A load balancer (LB) is the answer to the question.
 

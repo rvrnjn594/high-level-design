@@ -34,7 +34,7 @@ GSLB takes forwarding decisions based on the user's geographical locations, the 
 
 > In the next lesson, we'll also learn how GSLB offers automatic zonal failover.  
 >  GSLB service can be installed on-premise or obtained through **Load Balancing as a Service (LBaaS).** (_LBaaS is a cloud-based load balancing technique that follows a pay-per-use model. LBaaS offers the flexibility of automatic scaling up or down depending upon the traffic load._)
-
+>
 > The illustration below shows that the GSLB can forward requests to three different data centers. Each local load balancing layer within a data center will maintain a control plane connection with the GSLB providing information about the health of the LBs and the server farm.
 >
 > GSLB uses this information to drive traffic decisions and forward traffic load based on region's configuration and monitoring information.
