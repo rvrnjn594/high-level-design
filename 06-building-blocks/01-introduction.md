@@ -29,7 +29,7 @@ We'll discuss the following building blocks in detail:
    (discuss database types, replication, partitioning, and analysis of distributed databases.)
 4. **Key-Value Store:**  
    It is a non-relational database that stores data in the form of a key-value pair.  
-   (explain design of a key-value store along with inmportant concepts such as achieving scalability, durability, and configurability.)
+   (explain design of a key-value store along with important concepts such as achieving scalability, durability, and configurability.)
 5. **Content Delivery Network:**  
    Desing a content delivery network (CDN) that's used to keep viral content such as videos, images, audio, and webpages.  
    (efficiently delivers content to end users while reducing latency and burden on the data centers.)
