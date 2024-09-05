@@ -58,9 +58,9 @@ The following figure illustrates the cluster of independent hosts. There are two
 
 ---
 
-**Point to Ponder**  
-What kind of anomalies can arise while replication messages on other hosts?
+**Point to Ponder**
 
+**What kind of anomalies can arise while replication messages on other hosts?**
 A: There are two ways to replicate messages in a queue residing on multiple hosts.
 
 - Synchronous replication
