@@ -117,7 +117,7 @@ The main reasons make the DNS a reliable system:
     Even if some DNS servers are temporarily down, cached records can be served to make DNS a reliable system.
 2. **Server replication:**  
    DNS has replicated copies of each logical server spread systematically across the globe to entertain user requests at low latency.  
-    The redundant servers improvee the reliability of the overall system.
+    The redundant servers improve the reliability of the overall system.
 3. **Protocol:**  
    Although many clients rely in the unreliable User Datagram Protocol (UDP) to request and receive DNS responses, it's important to acknowledge that UDP also offers distinct advantages.
    - It is much faster, and therefore, improves DNS performance.
